@@ -1,0 +1,189 @@
+To record the desktop with sound on Windows 10 using C++, you can use the Windows API and the Windows Audio Session API. Here is a sample program that demonstrates how to do this:
+
+cpp
+Copy code
+#include <Windows.h>
+#include <mmdeviceapi.h>
+#include <Audioclient.h>
+#include <fstream>
+
+// Global variables
+UINT32 bufferFrameCount;
+IMMDevice* audioCaptureDevice;
+IAudioClient* audioClient;
+IAudioCaptureClient* audioCaptureClient;
+
+// Function to initialize the audio session
+bool InitAudioSession()
+{
+    HRESULT hr;
+    IMMDeviceEnumerator* deviceEnumerator = nullptr;
+    IMMDeviceCollection* deviceCollection = nullptr;
+
+    hr = CoCreateInstance(__uuidof(MMDeviceEnumerator), nullptr, CLSCTX_ALL, __uuidof(IMMDeviceEnumerator), (void**)&deviceEnumerator);
+    if (FAILED(hr)) return false;
+
+    hr = deviceEnumerator->EnumAudioEndpoints(eCapture, DEVICE_STATE_ACTIVE, &deviceCollection);
+    if (FAILED(hr)) return false;
+
+    UINT deviceCount;
+    hr = deviceCollection->GetCount(&deviceCount);
+    if (FAILED(hr)) return false;
+
+    for (UINT i = 0; i < deviceCount; i++)
+    {
+        IMMDevice* device = nullptr;
+        hr = deviceCollection->Item(i, &device);
+        if (FAILED(hr)) return false;
+
+        LPWSTR deviceId = nullptr;
+        hr = device->GetId(&deviceId);
+        if (FAILED(hr)) return false;
+
+        if (wcsstr(deviceId, L"Microphone Array") != nullptr) // Change this to the name of your audio capture device
+        {
+            audioCaptureDevice = device;
+            break;
+        }
+
+        CoTaskMemFree(deviceId);
+        device->Release();
+    }
+
+    deviceEnumerator->Release();
+    deviceCollection->Release();
+
+    WAVEFORMATEX* audioFormat = nullptr;
+    hr = audioCaptureDevice->Activate(__uuidof(IAudioClient), CLSCTX_ALL, nullptr, (void**)&audioClient);
+    if (FAILED(hr)) return false;
+
+    hr = audioClient->GetMixFormat(&audioFormat);
+    if (FAILED(hr)) return false;
+
+    hr = audioClient->Initialize(AUDCLNT_SHAREMODE_SHARED, 0, 10000000, 0, audioFormat, nullptr);
+    if (FAILED(hr)) return false;
+
+    hr = audioClient->GetBufferSize(&bufferFrameCount);
+    if (FAILED(hr)) return false;
+
+    hr = audioClient->GetService(__uuidof(IAudioCaptureClient), (void**)&audioCaptureClient);
+    if (FAILED(hr)) return false;
+
+    CoTaskMemFree(audioFormat);
+
+    return true;
+}
+
+// Function to start recording audio
+void StartAudioRecording()
+{
+    HRESULT hr;
+    hr = audioClient->Start();
+    if (FAILED(hr)) return;
+}
+
+// Function to stop recording audio
+void StopAudioRecording()
+{
+    HRESULT hr;
+    hr = audioClient->Stop();
+    if (FAILED(hr)) return;
+}
+
+int main()
+{
+    // Initialize the audio session
+    if (!InitAudioSession())
+    {
+        printf("Failed to initialize audio session\n");
+        return 1;
+    }
+
+    // Start recording audio
+    StartAudioRecording();
+
+    // Record the desktop
+    HDC desktopDC = GetDC(nullptr);
+    HDC captureDC = CreateCompatibleDC(desktopDC);
+    HBITMAP captureBitmap = CreateCompatibleBitmap(desktopDC, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
+    SelectObject(captureDC, captureBitmap);
+    BitBlt(captureDC, 0, 0, GetSystemMetrics(SM_CXSCREEN), Get
+
+
+
+Tagrous Painful
+a python program to screen record the desktop and desktop audio
+To screen record the desktop and desktop audio in Python, you can use the PyAV and PyAudio libraries. PyAV is a Python wrapper for the FFmpeg multimedia framework, which can be used to capture the desktop video. PyAudio is a Python wrapper for the PortAudio library, which can be used to capture the desktop audio. Here is a sample program that demonstrates how to do this:
+
+python
+Copy code
+import av
+import numpy as np
+import pyaudio
+import threading
+import time
+
+# Global variables
+video_frame_rate = 30
+video_width = 1920
+video_height = 1080
+video_pix_fmt = 'yuv420p'
+audio_channels = 2
+audio_sample_rate = 44100
+audio_sample_width = 2
+audio_format = pyaudio.paInt16
+audio_frames_per_buffer = 1024
+audio_device_index = 0
+output_file_name = 'output.mp4'
+
+# Function to capture the desktop video
+def capture_video():
+    container = av.open('desktop', mode='w')
+    video_stream = container.add_stream('h264', rate=video_frame_rate)
+    video_stream.width = video_width
+    video_stream.height = video_height
+    video_stream.pix_fmt = video_pix_fmt
+    video_stream.options = {'profile': 'high', 'preset': 'ultrafast', 'tune': 'zerolatency'}
+    video_stream.codec_context.options = {'crf': '18', 'b:v': '8M', 'maxrate': '10M', 'bufsize': '16M', 'g': '150'}
+    video_stream.codec_context.thread_type = 'slice'
+    video_stream.codec_context.bit_rate = 0
+    video_stream.codec_context.rc_buffer_size = 0
+    video_stream.codec_context.rc_max_rate = 0
+    video_stream.codec_context.rc_min_rate = 0
+    video_stream.codec_context.gop_size = 150
+    video_stream.codec_context.level = '4.1'
+    video_stream.codec_context.qmin = 10
+    video_stream.codec_context.qmax = 51
+    video_stream.codec_context.qdiff = 4
+    video_stream.codec_context.refcounted_frames = False
+
+    while not stop_event.is_set():
+        try:
+            video_frame = np.array(ImageGrab.grab(bbox=(0, 0, video_width, video_height)))
+            video_frame = video_frame[:, :, ::-1] # Convert from RGB to BGR
+            video_frame = video_frame.tostring()
+            video_frame = av.VideoFrame.from_buffer(video_frame, 'bgr24', (video_width, video_height))
+            video_frame.pts = video_stream.frames
+            video_stream.encode(video_frame)
+        except:
+            break
+
+    video_stream.close()
+    container.close()
+
+# Function to capture the desktop audio
+def capture_audio():
+    container = av.open('desktop', mode='r', format='gdigrab')
+    audio_stream = container.streams.audio[0]
+    audio_stream.options = {'sample_rate': audio_sample_rate, 'channels': audio_channels, 'sample_fmt': 's16'}
+    audio_stream.codec_context.thread_type = 'slice'
+    audio_stream.codec_context.refcounted_frames = False
+
+    p = pyaudio.PyAudio()
+    stream = p.open(format=audio_format, channels=audio_channels, rate=audio_sample_rate, input=True, frames_per_buffer=audio_frames_per_buffer, input_device_index=audio_device_index)
+    stream.start_stream()
+
+    while not stop_event.is_set():
+        try:
+            audio_frame = stream.read(audio_frames_per_buffer)
+            audio_frame = av.AudioFrame.from_ndarray(np.frombuffer(audio_frame, dtype

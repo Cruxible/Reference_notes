@@ -1,0 +1,215 @@
+To wake up your Roku TV using Python and the requests module, you can send a Wake-on-LAN (WOL) magic packet to the TV's IP address. Here is an example code that you can use:
+
+python
+Copy code
+import socket
+import requests
+
+def wake_on_lan(mac_address):
+    # construct magic packet
+    data = bytearray.fromhex("".join(mac_address.split(":")) * 16)
+    
+    # send magic packet
+    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+    sock.sendto(data, ("<broadcast>", 9))
+
+# set your Roku TV's IP address and MAC address
+ip_address = "192.168.1.239"
+mac_address = "78:80:38:07:38:26"
+
+# send WOL magic packet to wake up Roku TV
+wake_on_lan(mac_address)
+
+# wait for Roku TV to turn on
+# you can use a loop to periodically check if the TV is online
+while True:
+    try:
+        r = requests.get(f"http://{ip_address}:8060")
+        if r.status_code == 200:
+            print("Roku TV is online!")
+            break
+    except requests.exceptions.ConnectionError:
+        pass
+
+print("Done")
+In the code above, the wake_on_lan function constructs a magic packet based on the MAC address of your Roku TV and sends it to the broadcast address on port 9, which is the standard WOL port. This should wake up your Roku TV from sleep mode.
+
+After sending the WOL magic packet, the code waits for the TV to turn on by repeatedly sending HTTP requests to the TV's IP address and checking the response status code. Once the TV is online, the loop breaks and the code continues with any further processing you need.
+
+Note that this code assumes that your network supports Wake-on-LAN and that your Roku TV is configured to respond to WOL requests. You may need to enable WOL in your TV's settings or consult your network administrator if you encounter issues with WOL.
+
+
+Certainly! Here's a list of commands that you can use with the send_roku_command function to control your Roku TV:
+
+To control your Roku with Python, you can use the pyroku library. You can install it using pip:
+
+_________________________________________________________________________________________________________
+To launch the YouTube app, you can try the following code using the requests library in Python:
+
+import requests
+
+# Set the IP address of your Roku device
+ROKU_IP = '192.168.1.100'
+
+# Launch the YouTube app
+app_url = f'http://{ROKU_IP}:8060/launch/837'
+response = requests.post(app_url)
+
+Yes, you can get a list of the installed apps on your Roku device along with their app IDs by sending a GET request to the query/apps endpoint of the Roku ECP API. The response will be an XML document that includes information about each installed app, including its name, ID, and type.
+
+Here's an example of how to get a list of the installed apps on your Roku device using the requests library in Python:
+
+python
+Copy code
+import requests
+
+# Set the IP address of your Roku device
+ROKU_IP = '192.168.1.100'
+
+# Get a list of installed apps
+apps_url = f'http://{ROKU_IP}:8060/query/apps'
+response = requests.get(apps_url)
+
+# Parse the response XML to get app IDs and names
+app_ids = []
+app_names = []
+for app in response.text.split('<app '):
+    app_id_start = app.find('id="') + 4
+    app_id_end = app.find('"', app_id_start)
+    app_ids.append(app[app_id_start:app_id_end])
+    app_name_start = app.find('>', app_id_end) + 1
+    app_name_end = app.find('<', app_name_start)
+    app_names.append(app[app_name_start:app_name_end])
+
+# Print the app IDs and names
+for app_id, app_name in zip(app_ids, app_names):
+    print(f'{app_id}: {app_name}')
+In the example above, you'll need to replace '192.168.1.100' with the IP address of your Roku device on your network. The code sends a GET request to the query/apps endpoint of the Roku ECP API and then parses the XML response to get a list of the installed apps along with their IDs and names. The code then prints the app IDs and names to the console.
+
+Note that some apps may be hidden or not listed in the response if they are not available for launch via the Roku ECP API.
+
+_________________________________________________________________________________________________________
+In this example, 837 is the ID for the YouTube app on Roku. By sending a POST request to the Roku ECP API with the app ID in the URL, the code launches the YouTube app on your Roku device.
+
+Note that the app ID for YouTube on Roku might differ depending on the version of the Roku operating system, so you may need to adjust the ID accordingly if it doesn't work for you.
+
+Home: Presses the "Home" button.
+Rev: Presses the "Rewind" button.
+Fwd: Presses the "Fast Forward" button.
+Play: Presses the "Play" button.
+Select: Presses the "Select" button.
+Left: Presses the "Left" arrow button.
+Right: Presses the "Right" arrow button.
+Down: Presses the "Down" arrow button.
+Up: Presses the "Up" arrow button.
+Back: Presses the "Back" button.
+InstantReplay: Presses the "Instant Replay" button.
+Info: Presses the "Info" button.
+Backspace: Presses the "Backspace" button.
+Search: Presses the "Search" button.
+Enter: Presses the "Enter" button.
+VolumeDown: Decreases the TV's volume.
+VolumeUp: Increases the TV's volume.
+VolumeMute: Mutes the TV's volume.
+PowerOff: Turns off the TV.
+PowerOn: Turns on the TV.
+
+________________________________________________________________________________________________________
+'''To turn on your Roku TV using Python, you can use the requests library to send a POST request to your Roku TV's 
+IP address. Here's an example program:
+In this example, replace roku_ip with the IP address of your Roku TV. The program sends a POST request to the Roku TV's
+ /keypress/PowerOn endpoint with an XML payload that turns on the TV. If the request is successful, 
+ it will print a success message, otherwise, it will print an error message with the HTTP status code.'''
+
+import requests
+
+roku_ip = '192.168.1.239'  # Replace with your Roku TV's IP address
+
+# Construct the POST request payload to turn on the TV
+payload = '<?xml version="1.0" encoding="UTF-8"?><root><Power mode="PowerOn"></Power></root>'
+
+# Send the POST request to the Roku TV
+response = requests.post(f'http://{roku_ip}:8060/keypress/PowerOn', data=payload)
+
+# Check if the request was successful
+if response.status_code == requests.codes.ok:
+    print('Roku TV turned on successfully')
+else:
+    print(f'Failed to turn on Roku TV with error code: {response.status_code}')
+
+
+_________________________________________________________________________________________________________
+"""In this example, replace roku_ip with the IP address of your Roku TV. The send_roku_command function takes a command
+ string as an argument and sends a POST request to the corresponding Roku TV endpoint. The volume up and down commands 
+ use the /keypress/VolumeUp and /keypress/VolumeDown endpoints respectively. When the command is sent successfully, 
+ the program prints a success message, otherwise, it prints an error message with the HTTP status code."""
+
+import requests
+
+roku_ip = '192.168.1.239'  # Replace with your Roku TV's IP address
+
+def send_roku_command(command):
+    response = requests.post(f'http://{roku_ip}:8060/keypress/{command}')
+    if response.status_code == requests.codes.ok:
+        print(f'Roku TV {command} command sent successfully')
+    else:
+        print(f'Failed to send {command} command with error code: {response.status_code}')
+
+# Turn volume up
+send_roku_command('VolumeUp')
+
+# Turn volume down
+send_roku_command('VolumeDown')
+
+_________________________________________________________________________________________________________
+'''Yes, here's an example program that sends POST requests to press the "Play" and "Back" buttons on your Roku TV:
+In this example, replace roku_ip with the IP address of your Roku TV. The send_roku_command function sends a POST 
+request to the /keypress endpoint with the specified command. The "Play" and "Back" commands use the Play and Back 
+strings respectively. When the command is sent successfully, the program prints a success message, otherwise,
+it prints an error message with the HTTP status code.'''
+
+import requests
+
+roku_ip = '192.168.1.100'  # Replace with your Roku TV's IP address
+
+def send_roku_command(command):
+    response = requests.post(f'http://{roku_ip}:8060/keypress/{command}')
+    if response.status_code == requests.codes.ok:
+        print(f'Roku TV {command} command sent successfully')
+    else:
+        print(f'Failed to send {command} command with error code: {response.status_code}')
+
+# Press the "Play" button
+send_roku_command('Play')
+
+# Press the "Back" button
+send_roku_command('Back')
+
+_________________________________________________________________________________________________________
+Here are a few more things you might find useful when controlling your Roku TV with Python:
+
+You can use the time.sleep() function from the Python time module to introduce a delay between sending commands to the Roku TV. This can be useful to prevent overloading the TV's processor with too many commands at once. For example, if you want to press the "Right" arrow button and then the "Select" button with a 1-second delay in between, you can use:
+
+python
+Copy code
+import time
+send_roku_command('Right')
+time.sleep(1)
+send_roku_command('Select')
+The requests library can also be used to send GET requests to retrieve information from your Roku TV, such as the list of available channels or the TV's current state. To retrieve a list of channels installed on your Roku TV, you can use:
+
+python
+Copy code
+response = requests.get(f'http://{roku_ip}:8060/query/apps')
+channels = response.json()['apps']
+print(channels)
+This sends a GET request to the /query/apps endpoint and retrieves the list of channels as a JSON object. The json() method is used to parse the response as JSON and extract the list of channels.
+
+You can also use the subprocess module to control your Roku TV with the curl command-line tool. This can be useful if you prefer to work with shell commands instead of Python functions. For example, to press the "Home" button on your Roku TV using curl, you can use:
+
+python
+Copy code
+import subprocess
+subprocess.call(['curl', f'http://{roku_ip}:8060/keypress/Home'])
+This calls the curl command with the appropriate URL to send a POST request to the Roku TV's /keypress/Home endpoint. Note that this method may be less portable than using the requests library, as it requires the curl command-line tool to be installed on your system.

@@ -1,0 +1,110 @@
+#!/bin/bash
+trap ''2
+while true
+do
+clear
+echo "______▁▂▄▅▆▇█ PY Projects █▇▆▅▄▂▁______"
+echo " A) - ddos.py                          "
+echo " B) - tpaencrypt.py                    "
+echo " C) - PV.py                            "
+echo " D) - encrypt.py                       "
+echo " E) - cft.py                           "
+echo " F) - sft.py                           "
+echo " G) - pyss                             "
+echo " H) - port.py                          "
+echo " I) - amess.py                         "
+echo " J) - terminal                        "
+echo " K) - popopen.py                      "
+echo " L) - try.py                          "
+echo " M) - Back to Main                     "
+echo " Q) - Quit                             "
+echo -e "\n"
+echo -e "▁▂▄▅▆▇█ Pick a Project █▇▆▅▄▂▁ \c"
+read answer
+case "$answer" in
+A) echo "▁▂▄▅▆▇█ ddos.py █▇▆▅▄▂▁"
+   cd /media/cruxible/MAIN/bin/c/c++
+   exit
+;;
+B) echo "▁▂▄▅▆▇█ PNE.py █▇▆▅▄▂▁"
+   cd ~/crux/pys
+   python tpaencrypt.py
+   P
+;;
+C) echo "▁▂▄▅▆▇█ PV.py █▇▆▅▄▂▁"
+   cd ~/crux/pys
+   python PV.py
+   P
+;;
+D) echo "▁▂▄▅▆▇█ encrypt.py █▇▆▅▄▂▁"
+   sleep 1
+   cd ~/crux/pys
+   python encrypt.py
+   P
+;;
+E) echo "▁▂▄▅▆▇█ CFT.py █▇▆▅▄▂▁"
+   sleep 1
+   cd ~/crux/pys
+   python cft.py
+   P
+;;
+F) echo "▁▂▄▅▆▇█ SFT.py █▇▆▅▄▂▁"
+   sleep 1
+   cd ~/crux/pys
+   python sft.py
+   P
+;;
+G) echo "▁▂▄▅▆▇█ screenshot.py █▇▆▅▄▂▁"
+   sleep 1
+   cd ~/crux/pys/pyss
+   python ss.py
+   P
+;;
+H) echo "▁▂▄▅▆▇█ port.py █▇▆▅▄▂▁"
+   sleep 1
+   cd ~/crux/pys
+   python port.py
+   P
+;;
+I) echo "▁▂▄▅▆▇█ amess.py █▇▆▅▄▂▁"
+   sleep 1
+   cd ~/crux/pys
+   python amess.py
+;;
+J) echo "+▁▂▄▅▆▇█ terminal █▇▆▅▄▂▁"
+   sleep 1
+   cd ~
+   cd crux/pys
+   python term.py
+   P
+;;
+K) echo "▁▂▄▅▆▇█ popopen █▇▆▅▄▂▁"
+   sleep 1
+   cd ~
+   cd crux/py
+   python popopen.py
+   P
+;;
+L) echo "▁▂▄▅▆▇█ try.py █▇▆▅▄▂▁"
+   sleep 1
+   cd ~
+   cd crux/pys
+   python try.py
+   P
+;;
+M) echo "▁▂▄▅▆▇█ Back to Main █▇▆▅▄▂▁"
+   sleep 1
+   M
+;;
+Q) echo "+▁▂▄▅▆▇█ QUIT █▇▆▅▄▂▁"
+   exit
+   sleep 1
+;;
+*) echo "▁▂▄▅▆▇█ THAT IS NOT AN OPTION █▇▆▅▄▂▁"
+   sleep 1
+   P
+esac
+clear
+exit && cd
+sleep 1
+done

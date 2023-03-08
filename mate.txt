@@ -1,0 +1,13 @@
+Open a terminal and using nano open the file /etc/apt/sources.list. with sudo
+
+Add these two lines of code to the file and save it.
+
+deb http://kali.download/kali kali-rolling main non-free contrib
+deb-src http://kali.download/kali kali-rolling main non-free contrib
+
+Now everything is ready to install MATE desktop. Run the command given below.
+
+sudo apt-get install mate-core mate-desktop-environment-extra mate-desktop-environment-extras
+
+
+The installation will take some time to finish. After the installation is finished, restart the system (the command is sudo reboot or reboot if you are doing it from terminal). Once the system reboots and takes you to the login screen, before logging in click on the “settings” icon beside the “Signin” button. There you will see all the desktop environments present on the system right now. Select MATE and then login.

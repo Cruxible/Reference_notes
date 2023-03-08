@@ -1,0 +1,180 @@
+Python Commands
+----------------
+
+compile python code
+-----------------------------------------
+command - python -OO -m py_compile foo.py
+
+change to
+
+cd __pycache__
+
+python tpaterm.cpython-310.opt-2.pyc
+-------------------------------------
+print('Enter your name:')
+x = input()
+print('Hello, ' + x)
+
+-------------------------
+Take 2 inputs
+-----------------
+# list to store multi line input
+# press enter two times to exit
+data = []
+print("Tell me about yourself")
+while True:
+    line = input()
+    if line:
+        data.append(line)
+    else:
+        break
+finalText = '\n'.join(data)
+print("\n")
+print("Final text input")
+print(finalText)
+
+------------------------------------------------
+Runs any exe
+------------------------------------------------
+import subprocess
+subprocess.call('test.exe')
+or
+subprocess.call('C:\\Users\\tagro\\crux\\pys\\test.exe')
+
+---------------------------------------------------------
+Ofuscate
+------------------------------------
+pyobfuscate -i your_file.py -r True
+
+-------------------------------------
+Change Directories
+-------------------
+import os
+
+directory = os.getcwd()
+print("The current working directory of the file is : ", directory)
+os.chdir("/Users/krunallathiya/Desktop")
+
+import os
+
+directory = os.getcwd()
+print("The current working directory of the file is : ", directory)
+os.chdir("/Users/krunallathiya/Desktop")
+changedDirectory = os.getcwd()
+print(" The current working directory After changing the directory is : ", changedDirectory)
+--------------------------------------------------
+Change current dir in a try block
+----------------------------------
+import os
+
+directory = os.getcwd()
+print("The current working directory of the file is : ", directory)
+try:
+   os.chdir("/Users/krunallathiya/Desktop")
+except:
+   print("The directory cannot be changed")
+else:
+   changed = os.getcsd()
+print("The current working directory After changing the directory is : ", changed)
+
+------------------------------------------------------------------------------------
+Move file
+--------------------------------
+import shutil
+shutil.copy('C:\\Users\\tagro\\crux\\pys\\test.txt', 'C:\\Users\\tagro\\bin\\copy.txt')
+
+-----------------------------------------------------
+List Directory
+-----------------
+import os
+# specify your path of directory
+path = r"C:\\Users\\tagro\\crux\\pys"
+# call listdir() method
+# path is a directory of which you want to list
+directories = os.listdir( path )
+# This would print all the files and directories
+for file in directories:
+   print(file)
+
+import os
+files = []
+os.chdir("C:\\Users\\tagro\\crux\\pys")
+for file in os.listdir():
+        if file == "lsd.py":
+                continue
+        files.append(file)
+print(files)
+
+--------------------------------------------------
+Copy files
+-------------
+import shutil
+import os
+src = r'C:\Users\Administrator.SHAREPOINTSKY\Desktop\Work\file2.txt'
+dst = r'C:\Users\Administrator.SHAREPOINTSKY\Desktop\Newfolder\file2.txt'
+shutil.copyfile(src, dst)
+
+--------------------------------------------------
+import shutil
+
+original = r'original path where the file is currently stored\file name.file extension'
+target = r'target path where the file will be copied\file name.file extension'
+
+shutil.copyfile(original, target)
+
+--------------------------------------------------
+# Python Copy File - Sample Code
+
+from shutil import copyfile
+from sys import exit
+
+source = input("Enter source file with full path: ")
+target = input("Enter target file with full path: ")
+
+# adding exception handling
+try:
+   copyfile(source, target)
+except IOError as e:
+   print("Unable to copy file. %s" % e)
+   exit(1)
+except:
+   print("Unexpected error:", sys.exc_info())
+   exit(1)
+
+print("\nFile copy done!\n")
+
+while True:
+   print("Do you like to print the file ? (y/n): ")
+   check = input()
+   if check == 'n':
+       break
+   elif check == 'y':
+       file = open(target, "r")
+       print("\nHere follows the file content:\n")
+       print(file.read())
+       file.close()
+       print()
+       break
+   else:
+       Continue
+
+---------------------------------------------------
+copy subprocesses
+--------------------
+import subprocess
+
+src="1.txt.py"
+dst="2.txt.py"
+cmd='copy "%s" "%s"' % (src, dst)
+
+status = subprocess.call(cmd, shell=True)
+
+if status != 0:
+    if status < 0:
+        print("Killed by signal", status)
+    else:
+        print("Command failed with return code - ", status)
+else:
+    print('Execution of %s passed!\n' % cmd)
+
+--------------------------------------------------

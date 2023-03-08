@@ -1,0 +1,23 @@
+cmd commands
+_________________
+cd - shows current directory
+cd (path) - change directory
+cd .. or cd.. - back one directory
+dir - lists diectory
+mkdir Folder - make directory
+ren Folder NewFolderName - rename folder
+copy D:\Digital_Citizen\image0.bmp D:\Digital_Citizen\Digital_Citizen_Tests\testing_picture1.gif - copy files
+xcopy /s /i d:\Digital_Citizen c:\Backup_Digital_Citizen
+del Digital_Citizen_Notes.txt - delete a file
+del *.* - delete everything in a folder
+RD [Folder] - remove directory
+control.exe - run a .exe file
+
+
+python file.py - run python program
+
+d: - change to sd or drive. just type the drive with a :
+
+alias's in cmd
+_________________
+doskey ls=dir

@@ -1,0 +1,51 @@
+We need linux to compile the code
+_________________________________
+///////////////////////////////////////////////////////////////
+
+nasm boot.asm -f bin -o boot.bin
+truncate boot.bin -s 1200k
+mkisofs -o boot.iso -b boot.bin /mnt/d/bin/assembly
+qemu-system-x86_64 -cdrom boot.iso
+
+
+///////////////////////////////////////////////////////////////
+
+install tools linux/wsl
+________________________
+sudo apt install nasm
+sudo apt install mkisofs
+
+qemu on kali
+_____________
+sudo apt-get install qemu-system-x86_64
+sudo apt-get install qemu-system
+
+install qemu on windows
+_______________________
+must have msys with MING64
+run this in MING64:
+pacman -S mingw-w64-x86_64-qemu
+
+assembly on kali
+________________
+make bianary - nasm -f elf32 -o main.o main.asm
+make executable - ld -m elf_i386 -o main main.o
+/////////////////////////////////
+nasm main.asm -f bin -o main.bin
+////////////////////////////////
+
+run Assembly bianary
+_____________________
+qemu-system-x86_64 main.bin
+qemu-system-i386 -fda main.bin
+qemu-system-x86_64 -cdrom main.iso
+
+make floppy
+_______________
+dd status=noxfer conv=notrunc if=boot.bin of
+=boot.flp
+
+#run it in qemu
+_______________
+qemu-system-i386 -fda myfirst.flp
+qemu-system-x86_64 -cdrom MyOS.iso

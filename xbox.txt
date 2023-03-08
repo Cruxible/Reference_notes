@@ -1,0 +1,192 @@
+Controlling an Xbox One controller with Python can be done using the inputs library, which allows you to read input events from devices connected to your computer, including Xbox One controllers. Here's an example code snippet that demonstrates how to use the inputs library to read input events from an Xbox One controller:
+
+python
+Copy code
+from inputs import get_gamepad
+
+while True:
+    events = get_gamepad()
+    for event in events:
+        print(event.ev_type, event.code, event.state)
+This code will continuously read input events from the Xbox One controller and print out information about each event, including the event type (ev_type), the event code (code), and the event state (state).
+
+You can then use this information to control your game or perform other actions based on the input from the controller. For example, you could use the inputs library to detect when the user presses a specific button on the Xbox One controller, and then trigger a corresponding action in your Python program.
+
+Note that you may need to install additional software or libraries to use an Xbox One controller with your computer, depending on your operating system and hardware. For example, on Windows, you may need to install the Xbox Accessories app and connect your controller using a USB cable or wireless adapter. On Linux, you may need to install additional drivers and configure your system to recognize the controller.
+
+Sure, here's an example code that demonstrates how to control an Xbox One controller using Python and the inputs library:
+
+python
+Copy code
+from inputs import get_gamepad
+import xbox360_controller
+
+# create an instance of the Xbox360Controller class
+controller = xbox360_controller.Xbox360Controller()
+
+while True:
+    events = get_gamepad()
+    for event in events:
+        # check if the event is a button press
+        if event.ev_type == 'Key' and event.ev_code in controller.buttons:
+            # get the corresponding button name
+            button_name = controller.buttons[event.ev_code]
+            # handle the button press
+            if event.state == 1:
+                if button_name == 'A':
+                    controller.press_a()
+                elif button_name == 'B':
+                    controller.press_b()
+                elif button_name == 'X':
+                    controller.press_x()
+                elif button_name == 'Y':
+                    controller.press_y()
+                # add more button handlers as needed
+            # handle the button release
+            elif event.state == 0:
+                if button_name == 'A':
+                    controller.release_a()
+                elif button_name == 'B':
+                    controller.release_b()
+                elif button_name == 'X':
+                    controller.release_x()
+                elif button_name == 'Y':
+                    controller.release_y()
+                # add more button handlers as needed
+This code uses the xbox360_controller module to define a class that can be used to control an Xbox One controller. The code then reads input events from the controller using the inputs library, and uses the button handlers defined in the Xbox360Controller class to perform actions in response to button presses and releases.
+
+Note that you will need to install the inputs and xbox360_controller modules in order to run this code. You can install them using pip by running the following commands:
+
+Copy code
+pip install inputs
+pip install xbox360_controller
+Also note that this code is written for Python 3. If you are using Python 2, you will need to make some modifications to the code to ensure compatibility.
+
+
+
+
+Tagrous Painful
+what about the toogles and triggers?
+To handle the toggles and triggers on the Xbox One controller, you can modify the Xbox360Controller class in the xbox360_controller module to include methods for handling these inputs. Here's an updated version of the class that includes handlers for the left and right triggers and the left and right toggle switches:
+
+python
+Copy code
+from inputs import devices
+
+class Xbox360Controller:
+    """
+    Class for controlling an Xbox 360 or Xbox One controller.
+    """
+    def __init__(self):
+        self.buttons = {
+            288: 'A',
+            289: 'B',
+            290: 'X',
+            291: 'Y',
+            292: 'LB',
+            293: 'RB',
+            294: 'BACK',
+            295: 'START',
+            296: 'LS',
+            297: 'RS'
+        }
+        self.axes = {
+            0: 'LS_LR',
+            1: 'LS_UD',
+            2: 'LT',
+            3: 'RS_LR',
+            4: 'RS_UD',
+            5: 'RT'
+        }
+        self.toggle_left = False
+        self.toggle_right = False
+        self.trigger_left = 0
+        self.trigger_right = 0
+        
+        devices.init()
+        
+    def press_a(self):
+        print('A pressed')
+        
+    def release_a(self):
+        print('A released')
+        
+    def press_b(self):
+        print('B pressed')
+        
+    def release_b(self):
+        print('B released')
+        
+    def press_x(self):
+        print('X pressed')
+        
+    def release_x(self):
+        print('X released')
+        
+    def press_y(self):
+        print('Y pressed')
+        
+    def release_y(self):
+        print('Y released')
+        
+    def press_lb(self):
+        print('LB pressed')
+        
+    def release_lb(self):
+        print('LB released')
+        
+    def press_rb(self):
+        print('RB pressed')
+        
+    def release_rb(self):
+        print('RB released')
+        
+    def press_back(self):
+        print('BACK pressed')
+        
+    def release_back(self):
+        print('BACK released')
+        
+    def press_start(self):
+        print('START pressed')
+        
+    def release_start(self):
+        print('START released')
+        
+    def press_ls(self):
+        print('LS pressed')
+        
+    def release_ls(self):
+        print('LS released')
+        
+    def press_rs(self):
+        print('RS pressed')
+        
+    def release_rs(self):
+        print('RS released')
+        
+    def move_ls(self, x, y):
+        print(f'LS moved to ({x}, {y})')
+        
+    def move_rs(self, x, y):
+        print(f'RS moved to ({x}, {y})')
+        
+    def move_lt(self, value):
+        if self.trigger_left != value:
+            print(f'LT moved to {value}')
+            self.trigger_left = value
+            
+    def move_rt(self, value):
+        if self.trigger_right != value:
+            print(f'RT moved to {value}')
+            self.trigger_right = value
+            
+    def move_toggle_left(self, state):
+        if self.toggle_left != state:
+            print(f'Left toggle switched to {state}')
+            self.toggle_left = state
+            
+    def move_toggle_right(self, state):
+        if self.toggle_right != state:
+            print(f'Right toggle switched to {state}')
+            self.toggle_right = state

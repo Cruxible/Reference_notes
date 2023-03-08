@@ -1,0 +1,66 @@
+You can automate cmd commands in a file by creating a batch file. A batch file is a text file that contains a series of commands that are executed in sequence when the file is run.
+
+Here's an example of how to create a batch file that runs cmd commands:
+
+Open Notepad or your preferred text editor.
+Type the commands you want to run, each on a separate line. For example:
+bash
+Copy code
+@echo off
+cd C:\Users\UserName\Desktop
+dir
+This batch file changes the current directory to the Desktop folder and then runs the "dir" command to list the files in the directory.
+
+Save the file with a .bat extension. For example, you could save it as "mycommands.bat".
+
+Double-click the batch file to run it. This will open a cmd window and execute the commands in the file.
+
+You can also run a batch file from the command prompt by typing the name of the file followed by the .bat extension. For example, if you saved the file as "mycommands.bat" on the Desktop, you could run it from the command prompt by typing:
+
+makefile
+Copy code
+C:\Users\UserName\Desktop\mycommands.bat
+This will execute the commands in the batch file without opening a new cmd window.
+
+
+
+
+Tagrous Painful
+how do i make a batch file execute when i open cmd?
+To make a batch file execute when you open the command prompt, you can add its file path to the AutoRun registry key. Here's how:
+
+Press the Windows key + R to open the Run dialog box.
+Type regedit and press Enter to open the Registry Editor.
+In the Registry Editor, navigate to HKEY_CURRENT_USER\Software\Microsoft\Command Processor.
+Right-click on the Command Processor key and select New -> String Value.
+Name the new string value AutoRun.
+Double-click on the AutoRun value to open its properties.
+In the "Value data" field, enter the file path of your batch file, enclosed in double quotes. For example: "C:\Users\Username\mybatchfile.bat".
+Click OK to save the changes and close the Registry Editor.
+Now, when you open the command prompt, your batch file should be executed automatically. Note that if your batch file runs for a long time, it may delay the opening of the command prompt. Also, be sure to test your batch file thoroughly to make sure it works as intended when executed automatically.
+
+
+
+
+Tagrous Painful
+how do i open a new cmd window?
+You can use the start command in a batch file or in a command prompt to open a new Command Prompt window.
+
+To open a new Command Prompt window in a batch file, simply add the following line:
+
+sql
+Copy code
+start cmd
+To open a new Command Prompt window from an existing Command Prompt, simply type:
+
+sql
+Copy code
+start cmd
+This will open a new Command Prompt window, which will start in the same directory as the existing window. You can also specify a different directory for the new window by adding the /D option followed by the path to the directory you want to start in, like this:
+
+sql
+Copy code
+start cmd /D "C:\MyDirectory"
+This will open a new Command Prompt window that starts in the "C:\MyDirectory" directory.
+
+You can also add other options to the start command to control the appearance and behavior of the new Command Prompt window. For example, you can use the /B option to start the new window in "minimal" mode, or the /K option to run a command in the new window before returning to the original window. For more information on the start command and its options, type start /? at the Command Prompt.

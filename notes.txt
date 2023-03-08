@@ -1,0 +1,115 @@
+run c and c++ in sublime text hit ctrl + shift + b and click C++ single-file run
+
+openai API Key - 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
+
+c on kali
+_________
+compilie c code - gcc hello.c
+complie c with name - gcc -o hello hello.c
+run c code in kali - ./a.exe
+
+command prompt
+______________
+
+add gcc to path
+copy to cmd - set Path=C:\MinGW\bin;%PATH%
+
+add this to enviroment varibles in control panel:
+C:\MinGW\bin
+
+check for compilier - gcc --version
+complie the file - gcc hello.c
+command to complie code with a name - gcc hello.c -Wall -o hello
+run file with - hello.exe
+
+compile c++ on kali
+___________________
+g++ -o hello hello.cpp
+run c++ exe on kali
+./hello.exe
+
+complie c++ on windows
+_____________________________
+command to compile code with a name - g++ hello.cpp -Wall -o hello
+run file with - hello.exe
+
+assembly on kali
+________________
+make bianary - nasm -f elf32 -o main.o main.asm
+make executable - ld -m elf_i386 -o main main.o
+
+nasm main.asm -f bin -o main.bin
+
+Qemu
+_____
+
+install qemu on windows
+_______________________
+must have msys with MING64
+
+qemu on kali
+_____________
+sudo apt-get install qemu qemu-system-x86_64
+
+run this in MING64
+pacman -S mingw-w64-x86_64-qemu
+
+run Assembly bianary
+_____________________
+qemu-system-x86_64 main.bin
+qemu-system-i386 -fda main.bin
+qemu-system-x86_64 -cdrom main.iso
+
+
+truncate file with zeros linux
+___________________________
+truncate main.bin -s 1200k
+
+
+install mkisofs in linux/wsl
+________________
+sudo apt install mkisofs
+
+command to make iso
+_____________________
+mkisofs -o main.iso -b main.bin /mnt/d/bin/assembly
+
+
+#assemble boot.s file
+as --32 boot.s -o boot.o
+
+#compile kernel.c file
+gcc -m32 -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+
+#linking the kernel with kernel.o and boot.o files
+ld -m elf_i386 -T linker.ld kernel.o boot.o -o MyOS.bin -nostdlib
+
+#check MyOS.bin file is x86 multiboot file or not
+grub-file --is-x86-multiboot MyOS.bin
+
+#building the iso file
+mkdir -p isodir/boot/grub
+cp MyOS.bin isodir/boot/MyOS.bin
+cp grub.cfg isodir/boot/grub/grub.cfg
+grub-mkrescue -o MyOS.iso isodir
+
+#run it in qemu
+qemu-system-x86_64 -cdrom MyOS.iso
+
+
+
+WSL notes
+_________
+
+Accessing secondary drives and removable media
+
+$ sudo mkdir /mnt/d
+$ sudo mount -t drvfs D: /mnt/d
+Of course, you don’t you have to use the /mnt directory. You can mount the drives wherever you like as long you use Microsoft’s DrvFs as the filesystem type in your mount command.
+
+If you need to unmount a drive, you can use the normal umount Linux command.
+
+$ sudo umount /mnt/d
+libstdc++6.dll
+libgcc_s_dw2.dll
+After the Command Prompt opens, you can type the drive letter of the desired drive, followed by a colon, e.g. C:, D:, and hit Enter.
