@@ -1,6 +1,5 @@
 run c and c++ in sublime text hit ctrl + shift + b and click C++ single-file run
 
-openai API Key - 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
 
 c on kali
 _________
